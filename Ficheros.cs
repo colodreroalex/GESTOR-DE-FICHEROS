@@ -9,8 +9,8 @@ namespace ej4
 {
     public static class Ficheros
     {
-        private const string ORIGEN = @"G:\Mi unidad\Programacion\Ficheros";
-        private const string DESTINO = @"G:\Mi unidad\Programacion\OtrosFicheros";
+        private const string ORIGEN = "G:\\Mi unidad\\Programacion\\Ficheros\\";
+        private const string DESTINO = "G:\\Mi unidad\\Programacion\\OtrosFicheros\\";
 
         public static string[] CargarListaFicheros(Selector accion) //seleccionamos accion para indicar donde cargaremos los ficheros
         {
@@ -22,19 +22,18 @@ namespace ej4
             {
                 case Selector.copiar:
                 case Selector.mover:
-                    //Console.Write("Introduce la ruta de del archivo: ");
-                    //string origen = Console.ReadLine();
+                    
                     lista = Directory.GetFiles(ORIGEN);//--> ORIGEN
                     break;
                 case Selector.eliminar:
-                    //Console.Write("Introduce la ruta de DESTINO del archivo: ");
-                    //string destino = Console.ReadLine();
+                    
                     lista = Directory.GetFiles(DESTINO, "*.bak");
 
-                    //if (Directory.Exists(DESTINO) == true)
-                    //{
-                    //    Directory.Delete(DESTINO, true);
-                    //}
+                    if (Directory.Exists(DESTINO) == true)
+                    {
+                        Directory.Delete(DESTINO, true);
+                    }
+
                     break;
             }
 
@@ -68,27 +67,29 @@ namespace ej4
         {
             string destino;
 
-            //aislar el nombre del fichero
-            destino = fichero.Split(ORIGEN)[1];
+            
 
-            //Renombrar el fichero
+            destino = fichero.Replace(ORIGEN, DESTINO);
             destino = fichero.Replace("txt", "bak");
 
-            //construccion de la nueva ruta
-            destino = DESTINO + $"{destino}";
-
             //copia del fichero
-            File.Copy(fichero, destino, true);
+            File.Copy(fichero, destino  , true);
         }
 
         public static void Mover(string fichero)
         {
-            string destino;
+            
+            File.Move(fichero, DESTINO + $"\\{SeleccionarNombre(fichero)}" ); 
+        }
 
-            destino = fichero.Split(ORIGEN)[1];
-            destino = fichero.Replace("txt", "bak");
-            destino = DESTINO + $"{destino}";
-            File.Move(fichero, destino, true); 
+        public static string SeleccionarNombre(string fichero)
+        {
+            Console.Clear();
+            string nombre;
+            Console.WriteLine($"Que nombre quieres que tenga este fichero --> {fichero}?: ");
+            nombre = Console.ReadLine();
+
+            return nombre; 
         }
     }
 }

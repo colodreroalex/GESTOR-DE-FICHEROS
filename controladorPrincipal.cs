@@ -43,7 +43,7 @@ namespace ej4
 
         public static void Eliminar()
         {
-            throw new NotImplementedException();
+            
         }
 
         public static void Move()
@@ -53,26 +53,54 @@ namespace ej4
             int i = -1;
             bool correcto = false;
 
+            //Hay que cargar la lista de Ficheros
+            listaFicheros = Ficheros.CargarListaFicheros(Selector.mover);
+
+
             //1.-SELECCIONAR ARCHIVO A MOVER
             do
             {
-
+                //Controlar que no sea nulo
+                if (listaFicheros == null) correcto = true;
+                
                 //1.1.-Mostrar la lista de ficheros disponibles
                 pantalla.MostrarCabecera(Selector.mover);   
                 pantalla.MostrarListaOpcion2(listaFicheros);
+
+
                 //1.2.-Seleccionar el fichero o cancelar accion
+
+                try
+                {
+                    i = pantalla.LeerOpcion((int)Selector.salir, listaFicheros.Length) - 1;
+                    correcto = true; 
+                }
+                catch (Exception e)
+                {
+                    pantalla.MostrarError(e.Message);
+                }
+                finally
+                {
+                    if (!correcto) pantalla.Pausa(); 
+                }
+
 
             } while (!correcto);
 
-            
-
-           
 
             //2.-MOVER EL FICHERO
+
             //2.1.-Verificar si se ha cancelado la accion
-            //2.2.-Solicitar confirmacion de la Accion
-            //2.3.-Si confirmacion Aceptada --> Mover el fichero
-            
+            if (i >= 0)
+                //2.2.-Solicitar confirmacion de la Accion
+                if (pantalla.Confirmar($"Desea mover el Fichero: {listaFicheros[i]}?"))
+                    //2.3.-Si confirmacion Aceptada --> Mover el fichero
+                    Ficheros.Mover(listaFicheros[i]);
+
+
+
+
+
 
         }
 

@@ -43,12 +43,12 @@ namespace ej4
 
         public static void MostrarError(string message)
         {
-            Console.WriteLine("ERROR: ");
+            Console.WriteLine("ERROR: " + message);
         }
 
-        public static byte LeerOpcion(byte opmin,byte opmax)
+        public static int LeerOpcion(int opmin,int opmax)
         {
-            byte op;
+            int op;
 
             op = Convert.ToByte(Console.ReadLine());
 
@@ -86,17 +86,17 @@ namespace ej4
             }
         }
 
-        public static void MostrarLista(IEnumerable<string> lista)  //VALIDO
-        {
-            int i = 1;
-            Console.WriteLine("\t0 --> Cancelar");
+        //public static void MostrarLista(IEnumerable<string> lista)  //VALIDO
+        //{
+        //    int i = 1;
+        //    Console.WriteLine("\t0 --> Cancelar");
 
-            foreach (string fichero in lista)
-            {
-                Console.WriteLine($"\t{i} --> {fichero}");
-                i++;
-            }
-        }
+        //    foreach (string fichero in lista)
+        //    {
+        //        Console.WriteLine($"\t{i} --> {fichero}");
+        //        i++;
+        //    }
+        //}
 
         public static void MostrarListaOpcion2(string[] lista)  //Los dos son validos porque IENUMERABLE internamente es un array
         {
@@ -108,6 +108,24 @@ namespace ej4
                 Console.WriteLine($"\t{i} --> {fichero}");
                 i++;
             }
+        }
+
+        public static bool Confirmar(string mensaje)
+        {
+            bool moverOk = false;
+            byte opcion;
+            Console.Clear();
+
+            Console.WriteLine(mensaje);
+            Console.WriteLine("1.-Si");
+            Console.WriteLine("2.-No");
+            opcion = Convert.ToByte(Console.ReadLine());
+
+
+            if (opcion == 1) moverOk = true;
+            if (opcion > 2) throw new Exception("LAS OPCIONES SON 1 Y 2");
+            
+            return moverOk; 
         }
     }
 }
